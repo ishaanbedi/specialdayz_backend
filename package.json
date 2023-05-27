@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "@novu/node": "^0.15.0",
+    "@xata.io/client": "^0.24.0",
+    "bing-chat": "^0.2.3",
+    "cohere-ai": "^6.2.1",
+    "cron": "^2.3.1",
+    "dotenv": "^16.0.3",
+    "env": "^0.0.2",
+    "express": "^4.18.2",
+    "moment": "^2.29.4",
+    "node-cron": "^3.0.2",
+    "nodemon": "^2.0.22",
+    "openai": "^3.2.1"
+  },
+  "name": "specialdayz_backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js",
+    "event": "nodemon event.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
