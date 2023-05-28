@@ -26,7 +26,6 @@ const novuTrigger = async (email, name, message, event, giftIdeas) => {
     });
 };
 
-
 const getAIGiftSuggestions = async (name, event, interest) => {
     const response = await openai.createCompletion({
         model: "text-davinci-003",
@@ -113,29 +112,22 @@ const wisher = async () => {
     }
 };
 
-
+const job = new cron.CronJob('0 0 * * *', wisher);
 
 app.listen(5151, () => {
     console.log('Server started on port 5151');
 });
 
-app.get('/', async (req, res) => {
-    console.log('Manual trigger at root!');
-    res.json({
-        message: 'Hello world!'
-    });
-});
-
-app.post('/manual', async (req, res) => {
-    console.log('Manual trigger!');
+app.post('/', async (req, res) => {
     const authorizationHeader = await req.headers['authorization'];
+    console.log(authorizationHeader);
     if (authorizationHeader !== process.env.SECURITY_KEY) {
         console.log('Invalid security key!');
         return res.json({
             message: 'Invalid security key!'
         });
     }
-
+    
     const email = req.query.email;
     const user = req.query.name;
     const interests = req.query.interests;
@@ -145,10 +137,10 @@ app.post('/manual', async (req, res) => {
             query: req.query
         });
     }
-
+    
     const giftideas = await getAIGiftSuggestions(user, 'upcoming birthday and anniversary', interests);
     console.log(`Sending gift ideas to ${email} for ${user}!`);
-
+    
     novu.trigger('get-gift-ideas', {
         to: {
             subscriberId: email,
@@ -159,12 +151,11 @@ app.post('/manual', async (req, res) => {
             giftideas: giftideas
         }
     });
-
+    
     return res.json({
         message: 'Sent!',
         query: req.query
     });
 });
-const job = new cron.CronJob('0 0 * * *', wisher);
-console.log("Starting cron job...")
+console.log('Starting cron job...');
 job.start();
