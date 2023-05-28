@@ -120,9 +120,7 @@ app.listen(5151, () => {
 
 app.post('/', async (req, res) => {
     const authorizationHeader = await req.headers['authorization'];
-    console.log(authorizationHeader);
     if (authorizationHeader !== process.env.SECURITY_KEY) {
-        console.log('Invalid security key!');
         return res.json({
             message: 'Invalid security key!'
         });
@@ -139,7 +137,6 @@ app.post('/', async (req, res) => {
     }
     
     const giftideas = await getAIGiftSuggestions(user, 'upcoming birthday and anniversary', interests);
-    console.log(`Sending gift ideas to ${email} for ${user}!`);
     
     novu.trigger('get-gift-ideas', {
         to: {
