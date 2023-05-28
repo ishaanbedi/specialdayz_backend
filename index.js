@@ -119,7 +119,15 @@ app.listen(5151, () => {
     console.log('Server started on port 5151');
 });
 
+app.get('/', async (req, res) => {
+    console.log('Manual trigger at root!');
+    res.json({
+        message: 'Hello world!'
+    });
+});
+
 app.post('/manual', async (req, res) => {
+    console.log('Manual trigger!');
     const authorizationHeader = await req.headers['authorization'];
     if (authorizationHeader !== process.env.SECURITY_KEY) {
         console.log('Invalid security key!');
